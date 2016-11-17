@@ -10,11 +10,8 @@
 import pandas
 import requests
 from bs4 import BeautifulSoup
-##
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt 
-##
+import sys
+
 def get_tables(url,find_string={ "class" : "wikitable sortable" }):
     data=requests.get(url).text
     soup = BeautifulSoup(data,"html5lib")
@@ -55,10 +52,14 @@ def get_all_tables(url,mode='dict-array',find_string={ "class" : "wikitable sort
 
 
 if __name__=="__main__":
-    
-    for df in get_all_tables("https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)",mode='dataframe'):
+    if len(sys.argv)<=1:
+        url="https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"
+    else:
+        url=sys.argv[1]
+    for df in get_all_tables(url,mode='dataframe'):
         print '================================================================'
         print df.head()
         print ' '
         print ' '
+
    
